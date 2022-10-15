@@ -18,13 +18,13 @@ module.exports = (client) => {
         commandArray.push(command.data.toJSON());
         console.log(`Command: ${command.data.name} has been passed through `);
       }
-      console.log(commandArray)
     }
 
     const clientId = "940416078494965790";
     const guildId = "1030905588961517568";
 
     const rest = new REST({ version: "9" }).setToken(process.env.token_test);
+    console.log(client.commandArray)
     try {
       console.log("Started refreshing application (/) commands.");
 
@@ -35,5 +35,6 @@ module.exports = (client) => {
     } catch (error) {
       console.error(error);
     }
+    
   };
 };
