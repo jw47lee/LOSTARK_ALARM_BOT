@@ -9,7 +9,7 @@ function delay(timeout) {
 
 const crawler = async() => {
     try {
-        console.log("success");
+        console.log('Hi crawler here');
         const browser = await puppeteer.launch({ headless: true });    // Launch browser automation
         const page = await browser.newPage();
         
@@ -24,6 +24,7 @@ const crawler = async() => {
 
         const result = await page.evaluate(() => {                      // Retrieve region, area, and item into the result list
             const dataMap = {};
+            // Change it to Legendary
             const legList = document.querySelectorAll('div.card-frame.rarity--Legendary.merchant__card');
 
             if (legList.length) {
@@ -33,10 +34,11 @@ const crawler = async() => {
                     let img = item.querySelector('div.card-frame__inner > div.m-card__location').style['background-image'];
                     let imgURL = 'https://lostmerchants.com' + img.substring(5, img.length - 2);
                     let card = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(1) > span').innerHTML;
-                    let cardRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(1) > span').className;
-                    let r = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').innerHTML;
-                    let rap = r.substring(0, r.indexOf('<span'));
-                    let rapRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').className;
+                    let cardRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(1) > span').className.replace('item rarity--', '');
+                    let rap = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').innerHTML;
+                    let rapRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').className.replace('item rarity--', '');
+                    if (rapRarity != 'Legendary')
+                        rap = rap.substring(0, rap.indexOf('<span'));
 
                     dataMap[cont] = { 'Area': area, 'Image': imgURL,
                         'Card': card, 'Card_Rarity': cardRarity,
@@ -45,7 +47,8 @@ const crawler = async() => {
             }
             return dataMap;
         });
-
+        // console.log(result);
+        return result;
         browser.close();
     } catch (e) {
         console.error(e);

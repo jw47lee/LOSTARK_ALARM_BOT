@@ -7,19 +7,20 @@ module.exports = {
   async execute(interaction, client) {
     console.log(`Ready!!! ${client.user.tag} is logged in and online.`);
 
-    var refresh_time = 30000;
+    var refresh_time = 20000;
     var test_channel = client.channels.cache.get("1030905589410304134");
+    var rapport_dic = {};
 
     test_channel.send(
       "Hello! LostARK bot is online! I will let you know when Legendary rapport item is up!"
     );
 
-    setInterval(async () => {
+    setInterval(() => {
       const time = new Date();
       const current_minute = time.getMinutes();
 
       // test input
-      /** 
+      /*
       console.log(current_minute);
       var test_result = new Map([
         ["Continent", ["Area", "Legendary_item_name"]],
@@ -37,28 +38,24 @@ module.exports = {
       */
 
       if (current_minute > 30 && current_minute < 55) {
-        console.log("do the crawler");
+        console.log("Do the crawler");
         //run crawler and get result
         // TODO
-        const result = await cr.crawler();
-        console.log(result);
-        /*
-        if (Object.keys(result).length != Object.keys(rapport_dic).length) {
-          for (const [key, value] of Object.entries(result)) {
-            if (!(key in rapport_dic)) {
+        let response = cr.crawler().then(result => {
+          if (Object.keys(result).length != Object.keys(rapport_dic).length) {
+            console.log('Here comes legendary rapport!');
+            for (const [key, value] of Object.entries(result)) {
+              if (!(key in rapport_dic)) {
+                // if there is a change in the list, send embedded message
+                // add rapport
+                rapport_dic[key] = value;
 
-              // if there is a change in the list, send embedded message
-              // add rapport
-
-              rapport_dic[key] = value;
-              embed_message = embed_creator(key, value);
-              test_channel.send({
-                embeds: [embed_creator()],
-              });
+                embed_message = embed_creator(client, key, value);
+                test_channel.send({ embeds: [embed_message],});
+              }
             }
           }
-        }
-        */
+        });
 
       } else {
         console.log('Merchant is not up');
@@ -78,10 +75,10 @@ function embed_creator(client, continent, info) {
     */
 
   // example map
-  var item_map = "https://i.imgur.com/oqTzPl3.png";
+  var item_map = info['Image'];
 
   const embed = new EmbedBuilder()
-    .setTitle("전호 @" + continent)
+    .setTitle("전호 @" + continent + " 지역 @" + info['Area'])
     .setTimestamp(Date.now())
     .setColor(0xfaa300)
     .setAuthor({
@@ -96,10 +93,15 @@ function embed_creator(client, continent, info) {
     .setImage(item_map)
     .addFields([
       {
-        name: info[0],
-        value: info[1],
+        name: info['Card_Rarity'],
+        value: info['Card'],
         inline: true,
       },
+      {
+        name: info['Rapport_Rarity'],
+        value: info['Rapport'],
+        inline: true,
+      }
     ]);
 
   return embed;
