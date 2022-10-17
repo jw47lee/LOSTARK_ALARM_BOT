@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const cr = require('./crawler');
 
 module.exports = {
   name: "ready",
@@ -6,14 +7,14 @@ module.exports = {
   async execute(interaction, client) {
     console.log(`Ready!!! ${client.user.tag} is logged in and online.`);
 
-    var refresh_time = 1000;
+    var refresh_time = 30000;
     var test_channel = client.channels.cache.get("1030905589410304134");
 
     test_channel.send(
       "Hello! LostARK bot is online! I will let you know when Legendary rapport item is up!"
     );
 
-    setInterval(() => {
+    setInterval(async () => {
       const time = new Date();
       const current_minute = time.getMinutes();
 
@@ -39,7 +40,9 @@ module.exports = {
         console.log("do the crawler");
         //run crawler and get result
         // TODO
-        //result = crawler();
+        const result = await cr.crawler();
+        console.log(result);
+        /*
         if (Object.keys(result).length != Object.keys(rapport_dic).length) {
           for (const [key, value] of Object.entries(result)) {
             if (!(key in rapport_dic)) {
@@ -55,8 +58,10 @@ module.exports = {
             }
           }
         }
+        */
 
       } else {
+        console.log('Merchant is not up');
         rapport_dic = {};
       }
     }, refresh_time);
