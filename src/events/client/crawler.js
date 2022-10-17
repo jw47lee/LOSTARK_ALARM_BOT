@@ -25,7 +25,7 @@ const crawler = async() => {
         const result = await page.evaluate(() => {                      // Retrieve region, area, and item into the result list
             const dataMap = {};
             // Change it to Legendary
-            const legList = document.querySelectorAll('div.card-frame.rarity--Legendary.merchant__card');
+            const legList = document.querySelectorAll('div.card-frame.rarity--Rare.merchant__card');
 
             if (legList.length) {
                 legList.forEach((item) => {

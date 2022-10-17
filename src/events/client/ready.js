@@ -36,6 +36,7 @@ module.exports = {
         embeds: [embed_message],
       });
       */
+     console.log(rapport_dic);
 
       if (current_minute > 30 && current_minute < 55) {
         console.log("Do the crawler");
@@ -78,7 +79,7 @@ function embed_creator(client, continent, info) {
   var item_map = info['Image'];
 
   const embed = new EmbedBuilder()
-    .setTitle("전호 @" + continent + " 지역 @" + info['Area'])
+    .setTitle(continent + " · " + info['Area'])
     .setTimestamp(Date.now())
     .setColor(0xfaa300)
     .setAuthor({
@@ -93,12 +94,12 @@ function embed_creator(client, continent, info) {
     .setImage(item_map)
     .addFields([
       {
-        name: info['Card_Rarity'],
+        name: info['Card_Rarity'] + ' card',
         value: info['Card'],
         inline: true,
       },
       {
-        name: info['Rapport_Rarity'],
+        name: info['Rapport_Rarity'] + ' rapport',
         value: info['Rapport'],
         inline: true,
       }
