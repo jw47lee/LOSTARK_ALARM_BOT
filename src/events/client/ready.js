@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const cr = require('./crawler');
+const cr = require("./crawler");
 
 module.exports = {
   name: "ready",
@@ -18,48 +18,26 @@ module.exports = {
     setInterval(() => {
       const time = new Date();
       const current_minute = time.getMinutes();
-
-      // test input
-      /*
-      console.log(current_minute);
-      var test_result = new Map([
-        ["Continent", ["Area", "Legendary_item_name"]],
-      ]);
-      console.log("Continent");
-      console.log(test_result.get("Continent"));
-      embed_message = embed_creator(
-        client,
-        "Continent",
-        test_result.get("Continent")
-      );
-      test_channel.send({
-        embeds: [embed_message],
-      });
-      */
-     console.log(rapport_dic);
+      console.log(rapport_dic);
 
       if (current_minute > 30 && current_minute < 55) {
         console.log("Do the crawler");
-        //run crawler and get result
-        // TODO
-        let response = cr.crawler().then(result => {
-          if (Object.keys(result).length != Object.keys(rapport_dic).length) {
-            console.log('Here comes legendary rapport!');
-            for (const [key, value] of Object.entries(result)) {
-              if (!(key in rapport_dic)) {
-                // if there is a change in the list, send embedded message
-                // add rapport
-                rapport_dic[key] = value;
-
-                embed_message = embed_creator(client, key, value);
-                test_channel.send({ embeds: [embed_message],});
+        let response = cr.crawler().then((result) => {
+          if (typeof result != "undefined") {
+            if (Object.keys(result).length != Object.keys(rapport_dic).length) {
+              console.log("Here comes legendary rapport!");
+              for (const [key, value] of Object.entries(result)) {
+                if (!(key in rapport_dic)) {
+                  rapport_dic[key] = value;
+                  embed_message = embed_creator(client, key, value);
+                  test_channel.send({ embeds: [embed_message] });
+                }
               }
             }
           }
         });
-
       } else {
-        console.log('Merchant is not up');
+        console.log("Merchant is not up");
         rapport_dic = {};
       }
     }, refresh_time);
@@ -76,10 +54,10 @@ function embed_creator(client, continent, info) {
     */
 
   // example map
-  var item_map = info['Image'];
+  var item_map = info["Image"];
 
   const embed = new EmbedBuilder()
-    .setTitle(continent + " · " + info['Area'])
+    .setTitle(continent + " · " + info["Area"])
     .setTimestamp(Date.now())
     .setColor(0xfaa300)
     .setAuthor({
@@ -94,15 +72,15 @@ function embed_creator(client, continent, info) {
     .setImage(item_map)
     .addFields([
       {
-        name: info['Card_Rarity'] + ' card',
-        value: info['Card'],
+        name: info["Card_Rarity"] + " card",
+        value: info["Card"],
         inline: true,
       },
       {
-        name: info['Rapport_Rarity'] + ' rapport',
-        value: info['Rapport'],
+        name: info["Rapport_Rarity"] + " rapport",
+        value: info["Rapport"],
         inline: true,
-      }
+      },
     ]);
 
   return embed;
