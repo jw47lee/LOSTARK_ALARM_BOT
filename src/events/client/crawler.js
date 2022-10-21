@@ -22,15 +22,16 @@ const crawler = async() => {
 
         await delay(500);
 
-        const result = await page.evaluate(() => {                      // Retrieve region, area, and item into the result list
+        // console.log(await page.content());
+        const result = await page.evaluate(() => {
             const dataMap = {};
             // Change it to Legendary
             const legList = document.querySelectorAll('div.card-frame.rarity--Legendary.merchant__card');
 
             if (legList.length) {
                 legList.forEach((item) => {
-                    let cont = item.querySelector('div.card-frame__inner > div.card-frame__title').innerHTML;
-                    let area = item.querySelector('div.card-frame__inner > div.card-frame__title.title__clickable').innerHTML.replace(/[^a-zA-Z0-9 ]/g, '');
+                    let cont = item.querySelector('div.card-frame__inner > div:nth-child(1)').innerHTML;
+                    let area = item.querySelector('div.card-frame__inner > div:nth-child(2)').innerHTML.replace(/[^a-zA-Z0-9 ]/g, '');
                     let img = item.querySelector('div.card-frame__inner > div.m-card__location').style['background-image'];
                     let imgURL = 'https://lostmerchants.com' + img.substring(5, img.length - 2);
                     let card = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(1) > span').innerHTML;

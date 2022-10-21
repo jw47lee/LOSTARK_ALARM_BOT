@@ -18,11 +18,11 @@ module.exports = {
     setInterval(() => {
       const time = new Date();
       const current_minute = time.getMinutes();
-      console.log(rapport_dic);
+      // console.log(rapport_dic);
 
       if (current_minute > 30 && current_minute < 55) {
         console.log("Do the crawler");
-        let response = cr.crawler().then((result) => {
+        cr.crawler().then((result) => {
           if (typeof result != "undefined") {
             if (Object.keys(result).length != Object.keys(rapport_dic).length) {
               console.log("Here comes legendary rapport!");
