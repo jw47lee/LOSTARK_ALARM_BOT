@@ -8,19 +8,19 @@ function delay(timeout) {
 }
 
 const crawler = async() => {
+    const browser = await puppeteer.launch({ headless: true });    // Launch browser automation
     try {
         console.log('Hi crawler here');
-        const browser = await puppeteer.launch({ headless: true });    // Launch browser automation
         const page = await browser.newPage();
         
         await page.goto(url);
 
-        await delay(5000);                                              // Add delay
+        await delay(10000);                                              // Add delay
 
         await page.select('select#severRegion', 'NAE');                 // Select Region
         await page.select('select#server', 'Azena');                    // Select Server
 
-        await delay(500);
+        await delay(1000);
 
         // console.log(await page.content());
         const result = await page.evaluate(() => {
@@ -54,6 +54,7 @@ const crawler = async() => {
 
     } catch (e) {
         console.error(e);
+        browser.close();
     }
 };
 

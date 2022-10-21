@@ -7,13 +7,14 @@ module.exports = {
   async execute(interaction, client) {
     console.log(`Ready!!! ${client.user.tag} is logged in and online.`);
 
-    var refresh_time = 20000;
+    var refresh_time = 30000;
     var test_channel = client.channels.cache.get("1030905589410304134");
     var rapport_dic = {};
-
+    /*
     test_channel.send(
       "Hello! LostARK bot is online! I will let you know when Legendary rapport item is up!"
     );
+    */
 
     setInterval(() => {
       const time = new Date();
