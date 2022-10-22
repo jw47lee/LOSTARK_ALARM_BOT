@@ -9,18 +9,22 @@ module.exports = {
 
     var refresh_time = 30000;
     var test_channel = client.channels.cache.get("1030905589410304134");
+    
     var rapport_dic = {};
+    // azena_tag = "<@&1032846558431031356>"
     /*
-    test_channel.send(
-      "Hello! LostARK bot is online! I will let you know when Legendary rapport item is up!"
-    );
+    test_channel.send({
+      content:
+        `Hello! LostARK bot is online! I will let you know when Legendary rapport item is up!` +
+        "<@&1033169897456418836>, <@&1033169978251292732>",
+      embeds: [test_embed_creator(client)],
+    });
     */
 
     setInterval(() => {
       const time = new Date();
       const current_minute = time.getMinutes();
       // console.log(rapport_dic);
-
       if (current_minute > 30 && current_minute < 55) {
         console.log("Do the crawler");
         cr.crawler().then((result) => {
@@ -31,7 +35,10 @@ module.exports = {
                 if (!(key in rapport_dic)) {
                   rapport_dic[key] = value;
                   embed_message = embed_creator(client, key, value);
-                  test_channel.send({ embeds: [embed_message] });
+                  test_channel.send({
+                    //content: azena_tag,
+                    embeds: [embed_message],
+                  });
                 }
               }
             }
@@ -80,6 +87,39 @@ function embed_creator(client, continent, info) {
       {
         name: info["Rapport_Rarity"] + " rapport",
         value: info["Rapport"],
+        inline: true,
+      },
+    ]);
+
+  return embed;
+}
+
+function test_embed_creator(client) {
+  const embed = new EmbedBuilder()
+    .setTitle("continent" + " · " + "Area" + "<@&1033169978251292732>")
+    .setTimestamp(Date.now())
+    .setColor(0xfaa3aa)
+    .setAuthor({
+      iconURL: client.user.displayAvatarURL(),
+      name: client.user.tag,
+    })
+    .setFooter({
+      iconURL: client.user.displayAvatarURL(),
+      text: client.user.tag,
+    })
+    .setURL("https://www.youtube.com/watch?v=ByH9LuSILxU&ab_channel=AwwAnimals")
+    .setImage(
+      "https://styles.redditmedia.com/t5_2r5i1/styles/communityIcon_x4lqmqzu1hi81.jpg"
+    )
+    .addFields([
+      {
+        name: "aaa",
+        value: "aaa",
+        inline: true,
+      },
+      {
+        name: "bbb",
+        value: "bbb",
         inline: true,
       },
     ]);
