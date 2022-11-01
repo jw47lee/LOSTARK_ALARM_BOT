@@ -13,7 +13,7 @@ const crawler = async() => {
         console.log('Hi crawler here');
         const page = await browser.newPage();
         
-        await page.goto(url);
+        await page.goto(url, { waitUntil: 'networkidle2' });
 
         await delay(10000);                                              // Add delay
 
