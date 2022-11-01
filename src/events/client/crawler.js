@@ -38,12 +38,16 @@ const crawler = async() => {
                     let cardRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(1) > span').className.replace('item rarity--', '');
                     let rap = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').innerHTML;
                     let rapRarity = item.querySelector('div.card-frame__inner > div.stock > div:nth-child(2) > span').className.replace('item rarity--', '');
+                    let upvote = item.querySelector('div.card-frame__inner > div.m-card__buttons > div.m-card__score').innerHTML;
+                    
                     if (rapRarity != 'Legendary')
                         rap = rap.substring(0, rap.indexOf('<span'));
 
-                    dataMap[cont] = { 'Area': area, 'Image': imgURL,
+                    if (parseInt(upvote) > 1) {
+                        dataMap[cont] = { 'Area': area, 'Image': imgURL,
                         'Card': card, 'Card_Rarity': cardRarity,
                         'Rapport': rap, 'Rapport_Rarity': rapRarity };
+                    }
                 });
             }
             return dataMap;

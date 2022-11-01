@@ -104,7 +104,7 @@ function test_embed_creator(client) {
       name: client.user.tag,
     })
     .setFooter({
-      iconURL: client.user.displayAvatarURL(),
+      iconURL: client.user.displayAvatarURL(), 
       text: client.user.tag,
     })
     .setURL("https://www.youtube.com/watch?v=ByH9LuSILxU&ab_channel=AwwAnimals")
